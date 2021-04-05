@@ -1,0 +1,13 @@
+feeds:
+  o11y:
+    refresh: 30s
+    urls:
+      prometheus: https://github.com/prometheus/prometheus/releases.atom
+      grafana: https://github.com/grafana/grafana/releases.atom
+      node-exporter: https://github.com/prometheus/node_exporter/releases.atom
+  cicd:
+    refresh: 1m
+    urls:
+      argocd: https://github.com/argoproj/argo-cd/releases.atom
+      renovate: https://github.com/renovatebot/renovate/releases.atom
+      grafana: https://github.com/grafana/grafana/releases.atom
