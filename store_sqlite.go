@@ -181,7 +181,7 @@ WHERE id IN (
 		Items:       all,
 	}
 	f.Sort(func(a, b *feeds.Item) bool {
-		return a.Updated.Before(b.Updated)
+		return a.Updated.After(b.Updated)
 	})
 
 	b, err := json.Marshal(f)
