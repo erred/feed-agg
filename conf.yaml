@@ -33,6 +33,6 @@ feeds:
     urls:
       prometheus: https://github.com/prometheus/prometheus/releases.atom
       grafana: https://github.com/grafana/grafana/releases.atom
-      jaeger: https://github.com/jaegertracing/jaeger.atom
+      jaeger: https://github.com/jaegertracing/jaeger/releases.atom
       otelcol: https://github.com/open-telemetry/opentelemetry-collector/releases.atom
       otel-go: https://github.com/open-telemetry/opentelemetry-go/releases.atom
