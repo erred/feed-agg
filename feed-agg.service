@@ -21,7 +21,10 @@ RootDirectory=/run/feed-agg
 ProtectProc=noaccess
 ProcSubset=pid
 # mount our executable from host into namespace
-BindReadOnlyPaths=/usr/bin/feed-agg:/bin/feed-agg
+BindReadOnlyPaths=/usr/bin/feed-agg:/bin/feed-agg \
+    /etc/feed-agg:/etc/feed-agg:rbind \
+    /etc/resolv.conf:/etc/resolv.conf \
+    /etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt
 
 DynamicUser=true
 
@@ -60,7 +63,7 @@ PrivateMounts=true
 
 # I think this is everything most Go processes would need
 # maybe you can trim it down more?
-SystemCallFilter=@basic-io @file-system @io-event @network-io @sync
+# SystemCallFilter=@basic-io @file-system @io-event @network-io @sync
 SystemCallErrorNumber=EPERM
 SystemCallArchitectures=native
 
