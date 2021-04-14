@@ -26,8 +26,8 @@ type App struct {
 	store Storer
 }
 
-func NewApp(c Config) (*App, error) {
-	store, err := NewSQLite(context.Background(), c.Feeds)
+func NewApp(c Config, dataDir string) (*App, error) {
+	store, err := NewSQLite(context.Background(), dataDir, c.Feeds)
 	if err != nil {
 		return nil, err
 	}

@@ -1,11 +1,12 @@
 pkgname=feed-agg
-pkgver=r8.0665980
+pkgver=r10.342dbe1
 pkgrel=1
 pkgdesc='rss / atom feed aggregator'
 arch=('x86_64')
 url='https://github.com/seankhliao/feed-agg'
 license=('MIT')
 makedepends=('go')
+backup("etc/${pkgname}/conf.yaml")
 
 pkgver(){
     # count commits
@@ -22,5 +23,6 @@ package() {
     cd "${startdir}"
     install -Dm755 "${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
     install -Dm644 LICENSE "${pkgdir}/usr/share/${pkgname}/LICENSE"
+    install -Dm644 conf.yaml "${pkgdir}/etc/${pkgname}/conf.yaml"
     install -Dm644 "${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 }

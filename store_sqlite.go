@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"path/filepath"
 	"time"
 
 	"github.com/gorilla/feeds"
@@ -20,8 +21,8 @@ type SQLite struct {
 	db *sql.DB
 }
 
-func NewSQLite(ctx context.Context, fcs map[string]FeedConfig) (*SQLite, error) {
-	db, err := sql.Open("sqlite", "feeds.sqlite")
+func NewSQLite(ctx context.Context, dataDir string, fcs map[string]FeedConfig) (*SQLite, error) {
+	db, err := sql.Open("sqlite", filepath.Join(dataDir, "feeds.sqlite"))
 	if err != nil {
 		return nil, err
 	}

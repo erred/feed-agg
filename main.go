@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	var addr, configPath string
+	var addr, data, configPath string
 	flag.StringVar(&addr, "addr", "127.0.0.1:28003", "address to listen on")
+	flag.StringVar(&data, "data", "/var/lib/feed-agg", "path to data dir")
 	flag.StringVar(&configPath, "c", "/etc/feed-agg/conf.yaml", "path to config")
 	flag.Parse()
 
@@ -17,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app, err := NewApp(config)
+	app, err := NewApp(config, data)
 	if err != nil {
 		log.Fatal(err)
 	}
