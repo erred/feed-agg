@@ -1,5 +1,5 @@
 pkgname=feed-agg
-pkgver=r6.66f76b0
+pkgver=r7.b51529c
 pkgrel=1
 pkgdesc='rss / atom feed aggregator'
 arch=('x86_64')
@@ -22,5 +22,5 @@ package() {
     cd "${startdir}"
     install -Dm755 "${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
     install -Dm644 LICENSE "${pkgdir}/usr/share/${pkgname}/LICENSE"
-    # install -Dm644 "${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+    install -Dm644 "${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 }
