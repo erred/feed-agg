@@ -6,7 +6,7 @@ arch=('x86_64')
 url='https://github.com/seankhliao/feed-agg'
 license=('MIT')
 makedepends=('go')
-backup("etc/${pkgname}/conf.yaml")
+backup=("etc/${pkgname}/conf.yaml")
 
 pkgver(){
     # count commits
