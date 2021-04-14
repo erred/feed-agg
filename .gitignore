@@ -1,1 +1,6 @@
 feed-agg
+
+# makepkg
+pkg/
+src/
+*.pkg.tar.zst

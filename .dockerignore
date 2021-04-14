@@ -1,0 +1,9 @@
+pkg/
+src/
+PKGBUILD
+*.pkg.tar.zst
+*.service
+
+Dockerfile
+LICENSE
+README.md
