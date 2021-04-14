@@ -7,5 +7,6 @@ COPY . .
 RUN go build  -trimpath -ldflags="-s -w" -o /usr/local/bin/${APP}
 
 FROM gcr.io/distroless/static
+COPY conf.yaml /etc/feed-agg/conf.yaml
 COPY --from=build /usr/local/bin/${APP} /bin/${APP}
 ENTRYPOINT ["/bin/${APP}"]
