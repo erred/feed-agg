@@ -129,9 +129,13 @@ func convertItem(in *gofeed.Item) *feeds.Item {
 	}
 	if in.PublishedParsed != nil {
 		f.Created = *in.PublishedParsed
+		f.Updated = *in.PublishedParsed // fallback
 	}
 	if in.UpdatedParsed != nil {
 		f.Updated = *in.UpdatedParsed
+		if in.PublishedParsed == nil {
+			f.Created = *in.UpdatedParsed // fallback
+		}
 	}
 	return f
 }

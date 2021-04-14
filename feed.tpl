@@ -216,18 +216,16 @@
         <td>source</td>
         <td>updated</td>
         <td>author</td>
-        <td>link</td>
         <td>description</td>
       </tr>
     </thead>
     <tbody>
     {{- range $it := .Items }}
       <tr>
-        <td>{{ $it.Title }}</td>
+        <td><a href="{{ $it.Link.Href }}">{{ $it.Title }}</a></td>
         <td>{{ $it.Source.Href }}</td>
         <td><time>{{ $it.Updated }}</time</td>
         <td>{{ $it.Author.Name }}</td>
-        <td><a href="{{ $it.Link.Href }}">link</a></td>
         <td><p class="content">{{ $it.Description }}</p></td>
       </tr>
     {{- end }}
