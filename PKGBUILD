@@ -1,5 +1,5 @@
 pkgname=feed-agg
-pkgver=r7.b51529c
+pkgver=r8.0665980
 pkgrel=1
 pkgdesc='rss / atom feed aggregator'
 arch=('x86_64')

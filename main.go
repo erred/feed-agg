@@ -7,8 +7,9 @@ import (
 )
 
 func main() {
-	var configPath string
-	flag.StringVar(&configPath, "c", "/etc/feed-agg.yaml", "path to config")
+	var addr, configPath string
+	flag.StringVar(&addr, "addr", "127.0.0.1:28003", "address to listen on")
+	flag.StringVar(&configPath, "c", "/etc/feed-agg/conf.yaml", "path to config")
 	flag.Parse()
 
 	config, err := NewConfig(configPath)
@@ -23,5 +24,5 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", app)
-	log.Fatal(http.ListenAndServe("127.0.0.1:28003", mux))
+	log.Fatal(http.ListenAndServe(addr, mux))
 }

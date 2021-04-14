@@ -7,7 +7,7 @@ After=network-online.target
 [Service]
 Type=simple
 # path within the filesystem namespace
-ExecStart=/bin/feed-agg -config /etc/feed-agg/conf.yaml
+ExecStart=/bin/feed-agg
 RestartSec=60s
 Restart=always
 
