@@ -1,27 +1,23 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	_ "embed"
 	"fmt"
+	"io"
 	"net/http"
+	"sort"
 	"strings"
-	"text/template"
 	"time"
-)
 
-var (
-	//go:embed feed.tpl
-	feedTemplateRaw string
-
-	//go:embed index.tpl
-	indexTemplateRaw string
-
-	feedTemplate  = template.Must(template.New("feed").Parse(feedTemplateRaw))
-	indexTemplate = template.Must(template.New("index").Parse(indexTemplateRaw))
+	"github.com/go-logr/logr"
+	"github.com/gorilla/feeds"
+	"go.seankhliao.com/w/v16/render"
 )
 
 type App struct {
+	l     logr.Logger
 	feeds map[string]struct{}
 	store Storer
 }
@@ -68,7 +64,21 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	if r.URL.Path == "/" {
-		indexTemplate.Execute(w, a.feeds)
+		ro := &render.Options{
+			MarkdownSkip: true,
+			Data: render.PageData{
+				Title:       "feed-agg",
+				Description: "index of aggregated feeds",
+				H1:          "feed-agg",
+				H2:          "index",
+				Style:       style,
+				Compact:     true,
+			},
+		}
+		err := render.Render(ro, w, renderFeeds(a.feeds))
+		if err != nil {
+			a.l.Error(err, "render index")
+		}
 		return
 	}
 
@@ -100,8 +110,97 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "json":
 		feed.WriteJSON(w)
 	case "html":
-		feedTemplate.Execute(w, feed)
+		ro := &render.Options{
+			MarkdownSkip: true,
+			Data: render.PageData{
+				Compact:      true,
+				URLCanonical: "https://feed-agg.seankhliao.com/" + feedID + ".html",
+				Title:        feedID,
+				Description:  "aggregated " + feedID,
+				H1:           "feed-agg",
+				H2:           feedID,
+			},
+		}
+		err := render.Render(ro, w, renderFeed(feed))
+		if err != nil {
+			a.l.Error(err, "render feed", "feed", feedID)
+		}
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 	}
 }
+
+func renderFeed(feed *feeds.Feed) io.Reader {
+	buf := &bytes.Buffer{}
+	buf.WriteString(`
+  <table>
+    <thead>
+      <tr>
+        <td><em>title</em></td>
+        <td>source</td>
+        <td>updated</td>
+        <td>author</td>
+        <td>description</td>
+      </tr>
+    </thead>
+    <tbody>
+`)
+	for _, it := range feed.Items {
+		fmt.Fprintf(buf, `
+      <tr>
+        <td><a href="%s">%s</a></td>
+        <td>%s</td>
+        <td><time>%s</time</td>
+        <td>%s</td>
+        <td><p class="content">%s</p></td>
+      </tr>
+                `, it.Link.Href, it.Title, it.Source.Href, it.Updated, it.Author.Name, it.Description)
+	}
+	buf.WriteString(`
+    </tbody>
+  </table>
+`)
+	return buf
+}
+
+func renderFeeds(feeds map[string]struct{}) io.Reader {
+	buf := &bytes.Buffer{}
+	buf.WriteString(`
+  <table>
+    <thead>
+      <tr>
+        <td><em>feed</em></td>
+        <td>atom</td>
+        <td>rss</td>
+        <td>json</td>
+      </tr>
+    </thead>
+    <tbody>
+`)
+	var fs []string
+	for f := range feeds {
+		fs = append(fs, f)
+	}
+	sort.Strings(fs)
+	for _, f := range fs {
+		fmt.Fprintf(buf, `
+      <tr>
+        <td><a href="%[1]s.html">%[1]s</a></td>
+        <td><a href="%[1]s.rss">rss</a></td>
+        <td><a href="%[1]s.atom">atom</a></td>
+        <td><a href="%[1]s.json">json</a></td>
+      </tr>
+`, f)
+	}
+	buf.WriteString(`
+    </tbody>
+  </table>
+`)
+	return buf
+}
+
+var style = `
+table {
+  margin: 10vh 0;
+}
+`

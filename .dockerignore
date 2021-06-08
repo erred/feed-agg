@@ -1,3 +1,4 @@
+kustomize/
 pkg/
 src/
 PKGBUILD
@@ -5,5 +6,8 @@ PKGBUILD
 *.service
 
 Dockerfile
+feed-agg.service
 LICENSE
 README.md
+PKGBUILD
+skaffold.yaml
