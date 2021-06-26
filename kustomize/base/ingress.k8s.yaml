@@ -4,13 +4,13 @@ metadata:
   name: feed-agg
 spec:
   rules:
-    - host: feed-agg.k.seankhliao.com
+    - host: feed-agg.seankhliao.com
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: feed-agg
                 port:
                   name: http
+            path: /
+            pathType: Prefix

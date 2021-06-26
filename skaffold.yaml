@@ -14,9 +14,10 @@ build:
       registryMirror: mirror.gcr.io
   cluster:
     pullSecretName: kaniko-secret
+    pullSecretPath: kaniko-secret
     namespace: skaffold
 deploy:
-  kubeContext: kind-cluster29a
+  kubeContext: kind-cluster30
   kustomize:
     paths:
-      - kustomize/overlays/prod
+      - kustomize/overlays/cluster30
